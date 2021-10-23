@@ -31,7 +31,7 @@ def startThread(j):
                 swap(p2MustWait, ocupado)
                 print('swap 2 {}'.format(p2MustWait))
             p2MustWait = True
-        print('{}° done for thread {}'.fomrat(i, j))
+        print('{}° done for thread {}'.format(i, j))
         ocupado = False
 
 
