@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-from multiprocessing import Process
+from multiprocessing import Process, Value
 from time import sleep
 
 
 class Thread():
     def __init__(self):
-        self.p1MustWait = True
-        self.p2MustWait = False
-        self.ocupado = False
+        self.p1MustWait = Value('b', True)
+        self.p2MustWait = Value('b', False)
+        self.ocupado = Value('b', False)
 
     def main(self):
         for i in range(2):
@@ -18,30 +18,27 @@ class Thread():
     def startThread(self, j):
         for i in range(5):
             if (j == 0):
-                while (self.p1MustWait):
+                while (self.p1MustWait.value):
                     sleep(1)
-                    self.p1MustWait = self.ocupado
                     pass
             else:
-                while (self.p2MustWait):
+                while (self.p2MustWait.value):
                     sleep(1)
-                    self.p2MustWait = self.ocupado
                     pass
 
             if (j == 0):
-                [self.p2MustWait, self.ocupado] = self.swap(
-                    self.p2MustWait, self.ocupado)
-                self.p1MustWait = True
+                [self.p2MustWait.value, self.ocupado.value] = self.swap(
+                    self.p2MustWait.value, self.ocupado.value)
+                self.p1MustWait.value = True
             else:
-                [self.p1MustWait, self.ocupado] = self.swap(
-                    self.p1MustWait, self.ocupado)
-                self.p2MustWait = True
+                [self.p1MustWait.value, self.ocupado.value] = self.swap(
+                    self.p1MustWait.value, self.ocupado.value)
+                self.p2MustWait.value = True
 
             # critical section
             print('{}° done for thread {}'.format(i + 1, j))
 
-            sleep(1)
-            self.ocupado = False
+            self.ocupado.value = False
 
     def swap(self, a, b):
         car = a
