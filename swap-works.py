@@ -19,12 +19,13 @@ class Thread():
         for i in range(5):
             if (j == 0):
                 while (self.p1MustWait.value):
-                    sleep(1)
                     pass
             else:
                 while (self.p2MustWait.value):
-                    sleep(1)
                     pass
+
+            while (self.ocupado.value):
+                pass
 
             if (j == 0):
                 [self.p2MustWait.value, self.ocupado.value] = self.swap(
